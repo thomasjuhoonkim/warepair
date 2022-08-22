@@ -8,7 +8,7 @@ from flask_cors import CORS, cross_origin
 from geopy.geocoders import Nominatim
 geolocator = Nominatim(user_agent="google.com")
 
-api = Flask(__name__)
+api = Flask(__name__, static_folder="../frontend/build")
 api.config['SECRET_KEY'] = 'secret'
 psycopg2.extras.register_uuid()
 CORS(api)
@@ -92,7 +92,7 @@ def get_db_values():
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute('DROP TABLE IF EXISTS users;')
-    cur.execute('CREATE TABLE users user_id varchar (100) PRIMARY KEY NOT NULL,'
+    cur.execute('CREATE TABLE users (user_id varchar (100) PRIMARY KEY NOT NULL,'
                 'first_name varchar (50) NOT NULL,'
                 'last_name varchar (50) NOT NULL,'
                 'email varchar (50) NOT NULL,'
