@@ -44,9 +44,9 @@ const LandingPage = () => {
       <footer>
         <p>
           Copyright © <script>document.write(new Date().getFullYear())</script>
-          hackthesix
+          thomasjuhoonkim
           <a
-            href="https://github.com/changoug/hackthesix-2022"
+            href="https://github.com/thomasjuhoonkim/warepair"
             target="_blank"
             rel="noreferrer"
           >
