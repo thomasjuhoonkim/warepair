@@ -133,13 +133,15 @@ form {
   height: 100vh;
   width: 50vw;
   background-color: #ff9e3d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .Map {
   position: relative;
   height: 600px;
-  top: 100px;
-  left: 90px;
+  top: -20px;
 }
 
 .slider-label {
