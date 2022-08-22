@@ -13,7 +13,7 @@ import axios from "axios";
 import "./MapInterface.css";
 
 const MapInterface = () => {
-  const baseURL = "http://www.warepair.herokuapp.com/";
+  const baseURL = "http://www.warepair.herokuapp.com";
 
   const [helpLocation, setHelpLocation] = useState({});
 
