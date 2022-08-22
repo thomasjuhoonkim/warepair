@@ -16,6 +16,11 @@ CORS(api)
 session = {}
 
 
+@api.route('/')
+def index():
+    return api.send_static_file('index.html')
+
+
 @api.route('/register', methods=['POST'])
 def register():
     conn = get_db_connection()
