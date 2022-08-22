@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, send_from_directory
 import psycopg2
 import psycopg2.extras
 import uuid
@@ -19,7 +19,7 @@ session = {}
 
 @api.route('/')
 def index():
-    return render_template('index.html')
+    return send_from_directory(api.static_folder, "index.html")
 
 
 @api.route('/register', methods=['POST'])
