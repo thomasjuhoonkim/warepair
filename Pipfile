@@ -4,9 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-backend.util
-backend.config
-backend.emailjs
+util
+emailjs
+config
 flask = "*"
 gunicorn = "*"
 psycopg2 = "*"
