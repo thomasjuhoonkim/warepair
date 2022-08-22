@@ -18,7 +18,7 @@ session = {}
 
 @api.route('/')
 def index():
-    return api.send_static_file('../frontend/build/index.html')
+    return api.send_from_directory(api.static_folder, "index.html")
 
 
 @api.route('/register', methods=['POST'])
