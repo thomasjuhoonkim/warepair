@@ -2,8 +2,8 @@ from flask import Flask, request, jsonify
 import psycopg2
 import psycopg2.extras
 import uuid
-from util import get_db_connection, get_filtered_ticks
-from emailjs import trigger_email_creation
+from backend.util import get_db_connection, get_filtered_ticks
+from backend.emailjs import trigger_email_creation
 from flask_cors import CORS, cross_origin
 from geopy.geocoders import Nominatim
 geolocator = Nominatim(user_agent="google.com")
@@ -14,6 +14,7 @@ psycopg2.extras.register_uuid()
 CORS(api)
 
 session = {}
+
 
 @api.route('/register', methods=['POST'])
 def register():
@@ -60,6 +61,7 @@ def register():
     conn.close()
     return str(session["user_id"]) + ' registered'
 
+
 @api.route('/login', methods=['POST'])
 @cross_origin(supports_credentials=True)
 def login():
@@ -72,45 +74,48 @@ def login():
     conn = get_db_connection()
     cur = conn.cursor()
 
-    cur.execute(f"SELECT * FROM users WHERE email = '{email}' AND password = '{password}'")
+    cur.execute(
+        f"SELECT * FROM users WHERE email = '{email}' AND password = '{password}'")
     rows = cur.fetchall()
 
     if not rows:
         cur.close()
         conn.close()
         return 'Email and password do not match'
-    
+
     session["user_id"] = rows[0][0]
     return 'Logged in'
-    
+
+
 @api.route('/test', methods=['GET'])
 def get_db_values():
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute('DROP TABLE IF EXISTS users;')
     cur.execute('CREATE TABLE users (user_id varchar (100) PRIMARY KEY NOT NULL,'
-                                    'first_name varchar (50) NOT NULL,'
-                                    'last_name varchar (50) NOT NULL,'
-                                    'email varchar (50) NOT NULL,'
-                                    'password varchar (50) NOT NULL,'
-                                    'location varchar (100)',
-                                    'is_contractor BOOLEAN NOT NULL,'
-    )
+                'first_name varchar (50) NOT NULL,'
+                'last_name varchar (50) NOT NULL,'
+                'email varchar (50) NOT NULL,'
+                'password varchar (50) NOT NULL,'
+                'location varchar (100)',
+                'is_contractor BOOLEAN NOT NULL,'
+                )
     cur.execute('DROP TABLE IF EXISTS request;')
     cur.execute('CREATE TABLE request (request_id varchar (100) PRIMARY KEY NOT NULL,',
-                                    'user_id varchar (50) NOT NULL,',
-                                    'title varchar (50) NOT NULL,'
-                                    'description varchar (250) NOT NULL,'
-                                    'location varchar (100) NOT NULL,'
-                                    'contact_info varchar (100) NOT NULL,'
-                                    'compensation varchar (50) NOT NULL,'
-                                    'is_complete BOOLEAN NOT NULL,'
-    )
+                'user_id varchar (50) NOT NULL,',
+                'title varchar (50) NOT NULL,'
+                'description varchar (250) NOT NULL,'
+                'location varchar (100) NOT NULL,'
+                'contact_info varchar (100) NOT NULL,'
+                'compensation varchar (50) NOT NULL,'
+                'is_complete BOOLEAN NOT NULL,'
+                )
 
     tables = cur.fetchall()
     cur.close()
     conn.close()
     return tables
+
 
 @api.route('/logout', methods=['POST'])
 def logout():
@@ -131,10 +136,10 @@ def logout():
 #         'UPDATE users SET firstname=%s, lastname=%s, password=%s, email=%s, unit=%s, street=%s, city=%s, country=%s WHERE userid == %s',
 #         (
 #             update_profile.user_uuid,
-#             update_profile.user_firstname, 
-#             update_profile.user_lastname, 
-#             update_profile.user_password, 
-#             update_profile.user_email, 
+#             update_profile.user_firstname,
+#             update_profile.user_lastname,
+#             update_profile.user_password,
+#             update_profile.user_email,
 #             update_profile.user_unit,
 #             update_profile.user_street,
 #             update_profile.user_city,
@@ -145,7 +150,7 @@ def logout():
 #     cur.close()
 #     conn.close()
 #     return users
-    
+
 # @api.route('/test', methods=['GET'])
 # def get_db_values():
 #     conn = get_db_connection()
@@ -176,9 +181,9 @@ def logout():
 #     conn.close()
 #     return tables
 
+
 @api.route('/helpRequests', methods=['GET', 'POST'])
 @cross_origin(supports_credentials=True)
-
 def handle_help_requests():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -187,13 +192,14 @@ def handle_help_requests():
 
     # get all help requests
     if request.method == 'GET':
-        cur.execute("""SELECT * FROM requests WHERE is_complete = false AND user_id = %s :: VARCHAR;""", [session["user_id"]])
+        cur.execute(
+            """SELECT * FROM requests WHERE is_complete = false AND user_id = %s :: VARCHAR;""", [session["user_id"]])
         help_requests = cur.fetchall()
         cur.close()
         conn.close()
         print('request tings mahn', help_requests)
         return jsonify(help_requests)
-        
+
     # create a new help request
     elif request.method == 'POST':
         request_id = uuid.uuid4()
@@ -205,10 +211,11 @@ def handle_help_requests():
         contact_info = request.form["contact_info"]
         compensation = request.form["compensation"]
         user_id = session["user_id"]
-        
+
         cur.execute("""INSERT INTO requests (request_id, title, request_description, location, lng, lat, contact_info, compensation, user_id, is_complete)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
-                    (request_id, title, description, location, lng, lat, contact_info, compensation, user_id, False)
+                    (request_id, title, description, location, lng,
+                     lat, contact_info, compensation, user_id, False)
                     )
         trigger_email_creation({
             "request_id": request_id,
@@ -227,12 +234,14 @@ def handle_help_requests():
     # patch a help request
     elif request.method == 'PATCH':
         request_id = request.form.get("request_id")
-        cur.execute('UPDATE requests SET is_complete == TRUE WHERE request_id = %s', (request_id))
+        cur.execute(
+            'UPDATE requests SET is_complete == TRUE WHERE request_id = %s', (request_id))
 
         conn.commit()
         cur.close()
         conn.close()
         return f'Request {request_id} is set to completed'
+
 
 @api.route('/userCenter', methods=['GET'])
 def userCenter():
@@ -240,8 +249,10 @@ def userCenter():
     cur = conn.cursor()
     cur.execute(f"SELECT * FROM users WHERE user_id = '{session['user_id']}'")
     ret = dict()
-    ret["lat"] = geolocator.geocode(cur.fetchall()[0][5].replace(",", "")).latitude
-    ret["lng"] = geolocator.geocode(cur.fetchall()[0][5].replace(",", "")).longitude
+    ret["lat"] = geolocator.geocode(
+        cur.fetchall()[0][5].replace(",", "")).latitude
+    ret["lng"] = geolocator.geocode(
+        cur.fetchall()[0][5].replace(",", "")).longitude
     cur.close()
     conn.close()
     return jsonify(ret)
