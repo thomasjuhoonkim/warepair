@@ -5,7 +5,7 @@ import axios from "axios";
 
 import "./LoginPage.css";
 
-const baseURL = "http://www.warepair.herokuapp.com";
+const baseURL = "http://warepair.herokuapp.com";
 
 function LandingPage() {
   // email: 'johndoe@gmail.com',
