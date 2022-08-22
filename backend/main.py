@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, current_app
+import os
 import psycopg2
 import psycopg2.extras
 import uuid
@@ -8,8 +9,7 @@ from flask_cors import CORS, cross_origin
 from geopy.geocoders import Nominatim
 geolocator = Nominatim(user_agent="google.com")
 
-api = Flask(__name__, static_folder="../frontend/build",
-            template_folder="../frontend/build", static_url_path="")
+api = Flask(__name__, static_folder="../frontend/build", static_url_path="/")
 api.config['SECRET_KEY'] = 'secret'
 psycopg2.extras.register_uuid()
 CORS(api)
