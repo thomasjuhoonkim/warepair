@@ -3,7 +3,7 @@ import psycopg2
 import requests
 import json
 from flask import request
-from config import config
+from backend.config import config
 
 
 def get_db_connection():
