@@ -9,6 +9,8 @@ gunicorn = "*"
 psycopg2 = "*"
 geopy = "*"
 flask-cors = "*"
+requests = "*"
+configparser = "*"
 
 [dev-packages]
 
