@@ -8,7 +8,7 @@ from flask_cors import CORS, cross_origin
 from geopy.geocoders import Nominatim
 geolocator = Nominatim(user_agent="google.com")
 
-api = Flask(__name__, static_folder="../frontend/build")
+api = Flask(__name__, static_folder="../frontend/build", static_url_path="/")
 api.config['SECRET_KEY'] = 'secret'
 psycopg2.extras.register_uuid()
 CORS(api)
