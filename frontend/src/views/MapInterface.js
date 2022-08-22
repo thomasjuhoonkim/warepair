@@ -13,7 +13,7 @@ import axios from "axios";
 import "./MapInterface.css";
 
 const MapInterface = () => {
-  const baseURL = "http://127.0.0.1:5000";
+  const baseURL = "http://www.warepair.herokuapp.com/";
 
   const [helpLocation, setHelpLocation] = useState({});
 
@@ -22,14 +22,16 @@ const MapInterface = () => {
   const [map, setMapInstance] = useState();
 
   useEffect(() => {
-    axios.get(baseURL + '/helpRequests', { withCredentials: true }).then((response) => {
-      setRequests(response.data);
-      console.log(response.data);
-    });
+    axios
+      .get(baseURL + "/helpRequests", { withCredentials: true })
+      .then((response) => {
+        setRequests(response.data);
+        console.log(response.data);
+      });
   }, []);
 
   // for (let i = 0; i < requests.length; i++) {
-  //   requests[i] = 
+  //   requests[i] =
   //             {
   //               title: requests[2],
   //               description: requests[3],
@@ -122,22 +124,26 @@ const MapInterface = () => {
         onClick={() => setHelpLocation({})}
         onLoad={(map) => setTimeout(() => setMapInstance(map))}
       >
-        {requests && map && 
+        {requests &&
+          map &&
           requests.map((item) => {
-          let pos = {lat: parseFloat(item[6]), lng: parseFloat(item[5])}
-          console.log(center);
-          return (
-            <Marker
-              position={pos}
-              onClick={() => {
-                setHelpLocation(item);
-              }}
-            />
-          );
-        })}
+            let pos = { lat: parseFloat(item[6]), lng: parseFloat(item[5]) };
+            console.log(center);
+            return (
+              <Marker
+                position={pos}
+                onClick={() => {
+                  setHelpLocation(item);
+                }}
+              />
+            );
+          })}
         {helpLocation[4] && (
           <InfoWindow
-            position={{lat: parseFloat(helpLocation[6]), lng: parseFloat(helpLocation[5])}}
+            position={{
+              lat: parseFloat(helpLocation[6]),
+              lng: parseFloat(helpLocation[5]),
+            }}
             clickable={true}
             onCloseClick={() => setHelpLocation({})}
           >

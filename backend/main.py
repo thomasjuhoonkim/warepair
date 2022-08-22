@@ -1,5 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory, current_app
-import os
+from flask import Flask, request, jsonify, send_from_directory
 import psycopg2
 import psycopg2.extras
 import uuid
