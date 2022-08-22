@@ -22,7 +22,7 @@ const LandingPage = () => {
         <h1>Warepair</h1>
         <img className="logo" src={logo} alt="Warepair Logo" />
         <h2>All your repairs in one click.</h2>
-        <h3>Connecting local contractors with your reparis.</h3>
+        <h3>Connecting local contractors with your repairs.</h3>
         <hr className="landing-page-divider" />
         <div className="button-container">
           <button
