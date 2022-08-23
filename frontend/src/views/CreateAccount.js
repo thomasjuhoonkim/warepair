@@ -39,6 +39,13 @@ function LandingPage() {
               id="#password"
               type="password"
             ></input>
+            <span className="label">Access Code</span>
+            <input
+              className="access-code input"
+              placeholder="e.g. 123456"
+              id="#access-code"
+              type="text"
+            ></input>
             <hr className="divider" />
             <button
               className="login-button"

@@ -87,9 +87,15 @@ form {
   font-style: italic;
   position: relative;
 }
+.access-code::placeholder {
+  font-style: italic;
+  position: relative;
+}
 
 .divider {
   border: 1.5px solid var(--border-gray);
+  border-radius: 1.5px;
+  background-color: var(--border-gray);
   width: 100%;
   margin-bottom: 20px;
 }
