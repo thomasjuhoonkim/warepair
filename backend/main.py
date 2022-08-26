@@ -263,6 +263,7 @@ def userCenter():
     return jsonify(ret)
 
 
-@api.errorhandler(404)
-def not_found():
+@api.route('/', defaults={'path': ''})
+@api.route('/<path:path>')
+def catch_all(path):
     return send_from_directory(api.static_folder, "index.html")
