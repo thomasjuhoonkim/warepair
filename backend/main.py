@@ -261,3 +261,8 @@ def userCenter():
     cur.close()
     conn.close()
     return jsonify(ret)
+
+
+@api.errorhandler(404)
+def not_found():
+    return send_from_directory(api.static_folder, "index.html")
